@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/csv"
+	"fmt"
 	"log"
 	"os"
 	"unicode/utf8"
@@ -36,8 +37,7 @@ func convertCSVToText(inputFile string, outputFile string) error {
 		}
 
 		// Build the output record
-		outputRecord := SetStringToSize(record[0], 25) +
-			SetFillerToSize(5) +
+		outputRecord := fmt.Sprintf("%-25s", record[0]) +
 			SetStringToSize(record[1], 15) +
 			SetFillerToSize(5) +
 			SetStringToSize(record[2], 30) +
