@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"log"
 	"os"
-	"unicode/utf8"
 )
 
 func convertCSVToText(inputFile string, outputFile string) error {
@@ -38,15 +37,17 @@ func convertCSVToText(inputFile string, outputFile string) error {
 
 		// Build the output record
 		outputRecord := fmt.Sprintf("%-25s", record[0]) +
-			SetStringToSize(record[1], 15) +
-			SetFillerToSize(5) +
-			SetStringToSize(record[2], 30) +
-			SetFillerToSize(5) +
-			SetStringToSize(record[3], 15) +
-			SetFillerToSize(5) +
-			SetStringToSize(record[4], 3) +
-			SetFillerToSize(5) +
-			SetStringToSize(record[5], 15)
+			fmt.Sprintf("%-5s", "") +
+			fmt.Sprintf("%-15s", record[1]) +
+			fmt.Sprintf("%-5s", "") +
+			fmt.Sprintf("%-30s", record[2]) +
+			fmt.Sprintf("%-5s", "") +
+			fmt.Sprintf("%-15s", record[3]) +
+			fmt.Sprintf("%-5s", "") +
+			fmt.Sprintf("%-3s", record[4]) +
+			fmt.Sprintf("%-5s", "") +
+			fmt.Sprintf("%-10s", record[5]) +
+			fmt.Sprintf("%-38s", "")
 
 		// Write the output record to the output file
 		_, err = output.WriteString(outputRecord + "\n")
@@ -63,25 +64,4 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-}
-
-func SetStringToSize(input string, len int) string {
-	bytes := make([]byte, len)
-	len_input := utf8.RuneCountInString(input)
-	for i := 0; i < len; i++ {
-		if len_input > i {
-			bytes[i] = input[i]
-		} else {
-			bytes[i] = byte(32)
-		}
-	}
-	return string(bytes)
-}
-
-func SetFillerToSize(len int) string {
-	bytes := make([]byte, len)
-	for i := 0; i < len; i++ {
-		bytes[i] = byte(32)
-	}
-	return string(bytes)
 }
